@@ -1,41 +1,28 @@
 import {storage} from '@forge/api';
-
-interface Payload {
-	user: {
-		accountId: string;
-	};
-	eventType: string;
-	issue: {
-		key: string;
-	};
-}
+import {EventPayload} from "./event-payload";
 
 interface IssueViewers {
 	accountId: string;
 	viewedAt: number;
 }
 
-export const handler = async (payload: Payload, context: any) => {
+const AVI_JIRA_VIEWED_ISSUE = "avi:jira:viewed:issue";
+const AVI_JIRA_CREATED_ISSUE = "avi:jira:created:issue";
+
+export const handler = async (payload: EventPayload, context: any) => {
 
 	const accountId = payload.user.accountId;
 	const eventType = payload.eventType;
-	if (eventType !== "avi:jira:viewed:issue") {
+	if (eventType !== AVI_JIRA_VIEWED_ISSUE && eventType !== AVI_JIRA_CREATED_ISSUE) {
 		return;
 	}
 
 	const issueKey = payload.issue.key;
-	// console.log("Event triggered for issue with: ", JSON.stringify(payload));
 	console.log("Viewing issue: ", issueKey, " by user: ", accountId, " with event type: ", eventType);
 
 	const response = await storage.get("view-" + issueKey);
-	if (response == null) {
-		const viewers = [{accountId: accountId, viewedAt: Date.now()}];
-		await storage.set("view-" + issueKey, viewers);
-	} else {
-		const viewers = response as Array<IssueViewers>;
-		if (viewers.find(viewer => viewer.accountId === accountId) == null) {
-			viewers.push({accountId: accountId, viewedAt: Date.now()});
-			await storage.set("view-" + issueKey, viewers);
-		}
-	}
+	const viewers = (response || []) as Array<IssueViewers>;
+	const filteredViewers = viewers.filter(viewer => viewer.accountId !== accountId);
+	const updatedViewers = [{accountId: accountId, viewedAt: Date.now()}, ...filteredViewers];
+	await storage.set("view-" + issueKey, updatedViewers);
 };
