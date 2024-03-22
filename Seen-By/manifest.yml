@@ -1,0 +1,31 @@
+modules:
+  trigger:
+    - key: view-activity
+      function: issue-related-events
+      events:
+        - avi:jira:created:issue
+        - avi:jira:viewed:issue
+  jira:issueActivity:
+    - key: seen-by-issue-activity
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      title: Seen By
+  function:
+    - key: issue-related-events
+      handler: events.handler
+    - key: resolver
+      handler: index.handler
+resources:
+  - key: main
+    path: src/frontend/index.tsx
+permissions:
+  scopes:
+    - 'storage:app'
+    - 'read:jira-work'
+app:
+  id: ari:cloud:ecosystem::app/314c44d5-01cb-4f1b-9339-550ceea6e1cf
+  runtime:
+    name: nodejs18.x
+
