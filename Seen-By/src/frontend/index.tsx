@@ -10,6 +10,7 @@ interface IssueViewer {
 
 const App = () => {
 
+	const REFRESH_INTERVAL = 1000 * 60; // 1 minute
 	const JUST_NOW_THRESHOLD = 1000 * 60 * 2; // 2 minutes
 	const MINUTES_AGO_THRESHOLD = 1000 * 60 * 60; // 1 hour
 	const HOURS_AGO_THRESHOLD = 1000 * 60 * 60 * 12; // 12 hours
@@ -18,13 +19,21 @@ const App = () => {
 	const [watchingNow, setWatchingNow] = useState<Array<IssueViewer>>([]);
 
 	useEffect(() => {
-		invoke<Array<IssueViewer>>('getViewers', {touch: true}).then(value => {
-			setViewers(value);
 
-			const now = +new Date();
-			const watchingNow = value.filter(viewer => now - viewer.viewedAt < JUST_NOW_THRESHOLD);
-			setWatchingNow(watchingNow);
-		});
+		const refreshData = () => {
+			invoke<Array<IssueViewer>>('getViewers', {touch: true}).then(value => {
+				setViewers(value);
+
+				const now = +new Date();
+				const watchingNow = value.filter(viewer => now - viewer.viewedAt < JUST_NOW_THRESHOLD);
+				setWatchingNow(watchingNow);
+			});
+		};
+
+		refreshData();
+
+		const interval = setInterval(refreshData, REFRESH_INTERVAL);
+		return () => clearInterval(interval);
 	}, []);
 
 	const timestampToDisplayString = (timestamp: number): string => {
@@ -105,7 +114,11 @@ const App = () => {
 				<>
 					<Box xcss={xcss({paddingBottom: "space.200"})}>
 						<Box xcss={xcss({paddingBottom: "space.200"})}>
-							<Text>Watching now:</Text>
+							<Text>
+								<Strong>
+									Watching now:
+								</Strong>
+							</Text>
 						</Box>
 						<UserGroup>
 							{watchingNow.map((viewer) => (
@@ -119,7 +132,11 @@ const App = () => {
 			{viewers.length > 0 &&
 				<>
 					<Box xcss={xcss({paddingBottom: "space.200"})}>
-						<Text>Last viewed:</Text>
+						<Text>
+							<Strong>
+								Last viewed:
+							</Strong>
+						</Text>
 					</Box>
 					<Box>
 						{viewers.map((viewer) => (
