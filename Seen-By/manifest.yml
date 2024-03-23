@@ -5,6 +5,14 @@ modules:
       events:
         - avi:jira:created:issue
         - avi:jira:viewed:issue
+  jira:issueContext:
+    - key: seen-by-issue-context
+      resource: main
+      resolver:
+        function: resolver
+      render: native
+      label: Who's looking?
+      title: Seen By
   jira:issueActivity:
     - key: seen-by-issue-activity
       resource: main
