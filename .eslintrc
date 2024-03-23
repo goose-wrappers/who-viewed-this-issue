@@ -1,13 +1,11 @@
 {
-  "parserOptions": {
-    "sourceType": "module",
-    "ecmaVersion": 2017,
-    "ecmaFeatures": {
-      "jsx": true
-    }
-  },
-  "plugins": [
+  "parser": "@typescript-eslint/parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended" // Uses the recommended rules from the @typescript-eslint/eslint-plugin
   ],
-  "rules": {
+  "parserOptions": {
+    "ecmaVersion": 2020, // Allows for the parsing of modern ECMAScript features
+    "sourceType": "module" // Allows for the use of imports
   }
 }
