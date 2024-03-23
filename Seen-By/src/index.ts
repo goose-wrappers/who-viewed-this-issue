@@ -1,11 +1,40 @@
 import {storage} from "@forge/api";
+import {IssueViewers} from "./issue-viewers";
 
-export const handler = async (payload: any, context: any) => {
-	console.log("got view" + JSON.stringify(payload, null, 4));
+interface GetViewersPayload {
+	call: {
+		functionKey: "getViewers",
+		payload?: {
+			touch?: boolean,
+		},
+	},
+	context: {
+		accountId: string,
+		extension: {
+			issue: {
+				key: string;
+			},
+		},
+	},
+}
 
-	const issueKey = payload.context.extension.issue.key;
-	console.log("Viewing issue " + issueKey);
+export const handler = async (event: GetViewersPayload) => {
+	console.log("Got callback: " + JSON.stringify(event, null, 4));
 
-	const response = await storage.get("view-" + issueKey);
-	return response;
+	const issueKey = event.context.extension.issue.key;
+
+	if (event.call.payload && event.call.payload.touch) {
+		// add the current viewer to the list before returning
+		if (event.context.accountId) {
+			const accountId = event.context.accountId;
+			const response = await storage.get("view-" + issueKey);
+			const viewers = (response || []) as Array<IssueViewers>;
+			const filteredViewers = viewers.filter(viewer => viewer.accountId !== accountId);
+			const updatedViewers = [{accountId: accountId, viewedAt: Date.now()}, ...filteredViewers];
+			await storage.set("view-" + issueKey, updatedViewers);
+			return updatedViewers;
+		}
+	}
+
+	return await storage.get("view-" + issueKey);
 };
