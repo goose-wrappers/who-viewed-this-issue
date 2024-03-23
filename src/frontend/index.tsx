@@ -77,18 +77,10 @@ const App = () => {
 		return `${monthNames[monthIndex]} ${day}, ${year} at ${hour}:${minuteFormatted} ${ampm}`;
 	}
 
-	const seenCss = xcss({
-		backgroundColor: "color.background.accent.lime.subtlest",
-	});
-
-	const foo = xcss({
-		width: "32px",
-	});
-
 	const LastViewedItem = ({viewer}: { viewer: IssueViewer }) => {
 		return (
 			<Inline>
-				<Box xcss={foo}>
+				<Box xcss={xcss({width: "32px"})}>
 					<User accountId={viewer.accountId}/>
 				</Box>
 				<Box xcss={xcss({paddingLeft: 'space.200'})}>
