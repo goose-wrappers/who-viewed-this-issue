@@ -12,12 +12,13 @@ const App = () => {
 
 	const JUST_NOW_THRESHOLD = 1000 * 60 * 2; // 2 minutes
 	const MINUTES_AGO_THRESHOLD = 1000 * 60 * 60; // 1 hour
+	const HOURS_AGO_THRESHOLD = 1000 * 60 * 60 * 12; // 12 hours
 
 	const [viewers, setViewers] = useState<Array<IssueViewer>>([]);
 	const [watchingNow, setWatchingNow] = useState<Array<IssueViewer>>([]);
 
 	useEffect(() => {
-		invoke<Array<IssueViewer>>('getViewers', {}).then(value => {
+		invoke<Array<IssueViewer>>('getViewers', {touch: true}).then(value => {
 			setViewers(value);
 
 			const now = +new Date();
@@ -30,10 +31,13 @@ const App = () => {
 		const now = +new Date();
 		const diff = now - timestamp;
 		if (diff < JUST_NOW_THRESHOLD) {
-			return 'Just now';
+			return 'just now';
 		} else if (diff < MINUTES_AGO_THRESHOLD) {
 			const minutes = Math.floor(diff / (1000 * 60));
 			return `${minutes} minutes ago`;
+		} else if (diff < HOURS_AGO_THRESHOLD) {
+			const hours = Math.floor(diff / (1000 * 60 * 60));
+			return `${hours} hours ago`;
 		} else {
 			return formatTimestampToCustomString(timestamp);
 		}
@@ -76,18 +80,18 @@ const App = () => {
 		return (
 			<Inline>
 				<Box xcss={foo}>
-					<User accountId={viewers[0].accountId}/>
+					<User accountId={viewer.accountId}/>
 				</Box>
 				<Box xcss={xcss({paddingLeft: 'space.200'})}>
 					<Inline space="space.0">
 						<Text>
 							<Strong>
-								<User accountId={viewers[0].accountId}/>
+								<User accountId={viewer.accountId}/>
 							</Strong>
 						</Text>
 						<DoubleCheckmark/>
 					</Inline>
-					<Box xcss={xcss({color: "color.text.accent.gray"})}>
+					<Box xcss={xcss({color: "color.text.subtle"})}>
 						<Text>Last seen: {timestampToDisplayString(viewer.viewedAt)}</Text>
 					</Box>
 				</Box>
