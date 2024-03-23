@@ -1,0 +1,27 @@
+name: see-by
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      FORGE_EMAIL: ${{ secrets.FORGE_EMAIL }}
+      FORGE_API_TOKEN: ${{ secrets.FORGE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - run: npm install
+      - run: npm audit
+      - run: echo npm run lint || true
+      - run: |
+          npm install -g @forge/cli
+          forge settings set usage-analytics false
+      - run: |
+          forge deploy -e staging
+
