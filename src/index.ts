@@ -19,7 +19,7 @@ interface GetViewersPayload {
 }
 
 export const handler = async (event: GetViewersPayload) => {
-	console.log("Got callback: " + JSON.stringify(event, null, 4));
+	// console.log("Handling callback: " + JSON.stringify(event, null, 4));
 
 	const issueKey = event.context.extension.issue.key;
 
