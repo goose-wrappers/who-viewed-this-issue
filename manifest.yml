@@ -11,15 +11,15 @@ modules:
       resolver:
         function: resolver
       render: native
-      label: Who's looking?
-      title: Seen By
+      label: Click to open
+      title: Who Viewed This Issue?
   jira:issueActivity:
     - key: seen-by-issue-activity
       resource: main
       resolver:
         function: resolver
       render: native
-      title: Seen By
+      title: Who Viewed This Issue?
   function:
     - key: issue-related-events
       handler: events.handler
@@ -34,6 +34,7 @@ permissions:
     - 'read:jira-work'
 app:
   id: ari:cloud:ecosystem::app/314c44d5-01cb-4f1b-9339-550ceea6e1cf
+  licensing: true
   runtime:
     name: nodejs18.x
 
