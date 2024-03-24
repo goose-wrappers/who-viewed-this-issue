@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import ForgeReconciler, {Box, Inline, Strong, Text, User, UserGroup, xcss} from '@forge/react';
+import ForgeReconciler, {Box, Inline, Stack, Strong, Text, User, UserGroup, xcss} from '@forge/react';
 import {invoke} from '@forge/bridge';
 import {DoubleCheckmark} from "./double-checkmark";
 
@@ -84,17 +84,21 @@ const App = () => {
 					<User accountId={viewer.accountId}/>
 				</Box>
 				<Box xcss={xcss({paddingLeft: 'space.200'})}>
-					<Inline space="space.0">
-						<Text>
-							<Strong>
-								<User accountId={viewer.accountId}/>
-							</Strong>
-						</Text>
-						<DoubleCheckmark/>
-					</Inline>
-					<Box xcss={xcss({color: "color.text.subtle"})}>
-						<Text>Last seen: {timestampToDisplayString(viewer.viewedAt)}</Text>
-					</Box>
+					<Stack>
+						<Inline space="space.0">
+							<Text>
+								<Strong>
+									<User accountId={viewer.accountId}/>
+								</Strong>
+							</Text>
+							<DoubleCheckmark/>
+						</Inline>
+						<Box xcss={xcss({color: "color.text.subtle"})}>
+							<Text>
+								Last seen: {timestampToDisplayString(viewer.viewedAt)}
+							</Text>
+						</Box>
+					</Stack>
 				</Box>
 			</Inline>
 		)
