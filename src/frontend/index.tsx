@@ -90,6 +90,8 @@ const App = () => {
 								<Strong>
 									<User accountId={viewer.accountId}/>
 								</Strong>
+								&nbsp;
+								&nbsp;
 							</Text>
 							<DoubleCheckmark/>
 						</Inline>
