@@ -8,8 +8,10 @@
     "lint": "./node_modules/.bin/eslint src/**/*"
   },
   "devDependencies": {
+    "@types/node": "^20.11.30",
     "@typescript-eslint/eslint-plugin": "^7.3.1",
     "@typescript-eslint/parser": "^7.3.1",
+    "typescript": "^5.4.3",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0"
   },
@@ -17,8 +19,6 @@
     "@forge/bridge": "3.3.0",
     "@forge/react": "10.1.0",
     "@forge/resolver": "1.5.29",
-    "@types/node": "^20.11.30",
-    "react": "^18.2.0",
-    "typescript": "^5.4.3"
+    "react": "^18.2.0"
   }
 }
