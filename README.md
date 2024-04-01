@@ -21,4 +21,4 @@ Contact us at [https://www.goosewrappers.dev/contact-us](https://www.goosewrappe
 
 ## License
 
-***Who Viewed This Issue*** is distributed under the BSD license. Please see [LICENSE](license) file.
+***Who Viewed This Issue*** is distributed under the BSD license. Please see [LICENSE](LICENSE) file.
