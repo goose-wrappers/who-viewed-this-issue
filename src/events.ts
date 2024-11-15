@@ -7,12 +7,11 @@ const AVI_JIRA_CREATED_ISSUE = "avi:jira:created:issue";
 
 export const handler = async (payload: EventPayload, context: any) => {
 
-	const accountId = payload.user.accountId;
 	const eventType = payload.eventType;
 	if (eventType !== AVI_JIRA_VIEWED_ISSUE && eventType !== AVI_JIRA_CREATED_ISSUE) {
 		return;
 	}
-
+	const accountId = payload.user.accountId;
 	const issueKey = payload.issue.key;
 	console.log("Viewing issue: ", issueKey, " by user: ", accountId, " with event type: ", eventType);
 
