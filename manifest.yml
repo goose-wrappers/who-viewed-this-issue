@@ -34,6 +34,7 @@ permissions:
     - 'read:jira-work'
 app:
   id: ari:cloud:ecosystem::app/314c44d5-01cb-4f1b-9339-550ceea6e1cf
+  version: 2.4.1
   licensing:
     enabled: true
   runtime:
